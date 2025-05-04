@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useFormContext } from "@/context/FormContext";
 import { useToast } from "@/hooks/use-toast";
 import { UserService } from "@/services/UserService";
-import { CheckCircle, Edit, Loader2 } from "lucide-react";
+import { AlertCircle, Bank, CheckCircle, Edit, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 const BankDetailsForm = () => {
@@ -137,19 +138,20 @@ const BankDetailsForm = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
+    <Card className="shadow-md">
+      <CardHeader className="bg-blue-50 border-b">
+        <CardTitle className="flex items-center text-xl font-semibold text-gray-800">
+          <Bank className="h-5 w-5 mr-2 text-blue-600" />
           Bank Details
           {isVerified && (
             <CheckCircle className="ml-2 h-5 w-5 text-green-600" />
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="accountHolderName" className="form-label">
+            <label htmlFor="accountHolderName" className="text-sm font-medium text-gray-700">
               Account Holder Name
             </label>
             <Input
@@ -160,13 +162,17 @@ const BankDetailsForm = () => {
               value={formData.accountHolderName}
               onChange={handleChange}
               disabled={isLoading || !isEditing || isVerified}
+              className="border-gray-300"
             />
             {errors.accountHolderName && (
-              <p className="text-sm text-red-500">{errors.accountHolderName}</p>
+              <p className="text-sm text-red-500 flex items-center mt-1">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                {errors.accountHolderName}
+              </p>
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="accountNumber" className="form-label">
+            <label htmlFor="accountNumber" className="text-sm font-medium text-gray-700">
               Account Number
             </label>
             <Input
@@ -177,13 +183,17 @@ const BankDetailsForm = () => {
               value={formData.accountNumber}
               onChange={handleChange}
               disabled={isLoading || !isEditing || isVerified}
+              className="border-gray-300"
             />
             {errors.accountNumber && (
-              <p className="text-sm text-red-500">{errors.accountNumber}</p>
+              <p className="text-sm text-red-500 flex items-center mt-1">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                {errors.accountNumber}
+              </p>
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="ifscCode" className="form-label">
+            <label htmlFor="ifscCode" className="text-sm font-medium text-gray-700">
               IFSC Code
             </label>
             <div className="flex space-x-2">
@@ -195,6 +205,7 @@ const BankDetailsForm = () => {
                 value={formData.ifscCode}
                 onChange={handleChange}
                 disabled={isLoading || !isEditing || isVerified}
+                className="border-gray-300"
               />
               <Button
                 type="button"
@@ -203,6 +214,7 @@ const BankDetailsForm = () => {
                 disabled={
                   isLoading || isValidatingIfsc || !isEditing || isVerified
                 }
+                className="whitespace-nowrap"
               >
                 {isValidatingIfsc ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -212,11 +224,14 @@ const BankDetailsForm = () => {
               </Button>
             </div>
             {errors.ifscCode && (
-              <p className="text-sm text-red-500">{errors.ifscCode}</p>
+              <p className="text-sm text-red-500 flex items-center mt-1">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                {errors.ifscCode}
+              </p>
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="bankName" className="form-label">
+            <label htmlFor="bankName" className="text-sm font-medium text-gray-700">
               Bank Name
             </label>
             <Input
@@ -227,13 +242,17 @@ const BankDetailsForm = () => {
               value={formData.bankName}
               onChange={handleChange}
               disabled
+              className="bg-gray-50 border-gray-300"
             />
             {errors.bankName && (
-              <p className="text-sm text-red-500">{errors.bankName}</p>
+              <p className="text-sm text-red-500 flex items-center mt-1">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                {errors.bankName}
+              </p>
             )}
           </div>
           <div className="space-y-2">
-            <label htmlFor="branch" className="form-label">
+            <label htmlFor="branch" className="text-sm font-medium text-gray-700">
               Branch
             </label>
             <Input
@@ -244,18 +263,23 @@ const BankDetailsForm = () => {
               value={formData.branch}
               onChange={handleChange}
               disabled
+              className="bg-gray-50 border-gray-300"
             />
             {errors.branch && (
-              <p className="text-sm text-red-500">{errors.branch}</p>
+              <p className="text-sm text-red-500 flex items-center mt-1">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                {errors.branch}
+              </p>
             )}
           </div>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 pt-2">
             {!isEditing && !isVerified && (
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleEdit}
                 disabled={isLoading}
+                className="hover:bg-blue-50"
               >
                 <Edit className="mr-2 h-4 w-4" /> Edit
               </Button>
@@ -263,13 +287,22 @@ const BankDetailsForm = () => {
             {isEditing && (
               <Button
                 type="submit"
-                className="w-full"
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full"
                 disabled={isLoading || isVerified || !isIfscValidated}
               >
                 {isLoading ? "Saving..." : "Save Bank Details"}
               </Button>
             )}
           </div>
+          
+          {!isIfscValidated && isEditing && !isLoading && (
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mt-4">
+              <h4 className="text-sm font-medium text-blue-800 mb-2">IFSC Code Validation</h4>
+              <p className="text-xs text-blue-700">
+                Please validate your IFSC code first. This will auto-fill your bank name and branch details.
+              </p>
+            </div>
+          )}
         </form>
       </CardContent>
     </Card>

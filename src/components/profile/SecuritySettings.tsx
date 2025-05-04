@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +13,7 @@ import { useFormContext } from "@/context/FormContext";
 import { useToast } from "@/hooks/use-toast";
 import { UserService } from "@/services/UserService";
 import { validateConfirmPassword, validatePassword } from "@/utils/validation";
-import { Eye, EyeOff, Shield } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Lock, Shield } from "lucide-react";
 import { useState } from "react";
 
 const SecuritySettings = () => {
@@ -107,26 +108,29 @@ const SecuritySettings = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Shield className="h-5 w-5 mr-2" />
+    <Card className="shadow-md">
+      <CardHeader className="bg-blue-50 border-b">
+        <CardTitle className="flex items-center text-xl font-semibold text-gray-800">
+          <Shield className="h-5 w-5 mr-2 text-blue-600" />
           Security Settings
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-600">
           Manage your account security and password
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <div className="space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Change Password</h3>
+            <h3 className="text-lg font-medium text-gray-800 flex items-center">
+              <Lock className="h-4 w-4 mr-2 text-blue-600" />
+              Change Password
+            </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <label
                   htmlFor="currentPassword"
-                  className="text-sm font-medium"
+                  className="text-sm font-medium text-gray-700"
                 >
                   Current Password
                 </label>
@@ -137,12 +141,12 @@ const SecuritySettings = () => {
                     type={showPassword ? "text" : "password"}
                     value={formData.currentPassword}
                     onChange={handleChange}
-                    className="pr-10"
+                    className="pr-10 border-gray-300"
                     disabled={isLoading}
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -153,14 +157,15 @@ const SecuritySettings = () => {
                   </button>
                 </div>
                 {errors.currentPassword && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-red-500 flex items-center mt-1">
+                    <AlertCircle className="h-3 w-3 mr-1" />
                     {errors.currentPassword}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="newPassword" className="text-sm font-medium">
+                <label htmlFor="newPassword" className="text-sm font-medium text-gray-700">
                   New Password
                 </label>
                 <div className="relative">
@@ -170,19 +175,22 @@ const SecuritySettings = () => {
                     type={showPassword ? "text" : "password"}
                     value={formData.newPassword}
                     onChange={handleChange}
-                    className="pr-10"
+                    className="pr-10 border-gray-300"
                     disabled={isLoading}
                   />
                 </div>
                 {errors.newPassword && (
-                  <p className="text-sm text-red-500">{errors.newPassword}</p>
+                  <p className="text-sm text-red-500 flex items-center mt-1">
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    {errors.newPassword}
+                  </p>
                 )}
               </div>
 
               <div className="space-y-2">
                 <label
                   htmlFor="confirmPassword"
-                  className="text-sm font-medium"
+                  className="text-sm font-medium text-gray-700"
                 >
                   Confirm New Password
                 </label>
@@ -193,23 +201,36 @@ const SecuritySettings = () => {
                     type={showPassword ? "text" : "password"}
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="pr-10"
+                    className="pr-10 border-gray-300"
                     disabled={isLoading}
                   />
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-red-500 flex items-center mt-1">
+                    <AlertCircle className="h-3 w-3 mr-1" />
                     {errors.confirmPassword}
                   </p>
                 )}
               </div>
 
               <div className="pt-2">
-                <Button type="submit" disabled={isLoading}>
+                <Button 
+                  type="submit" 
+                  disabled={isLoading}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   {isLoading ? "Changing Password..." : "Change Password"}
                 </Button>
               </div>
             </form>
+          </div>
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+            <h4 className="text-sm font-medium text-blue-800 mb-2">Password Tips</h4>
+            <ul className="text-xs text-blue-700 space-y-1">
+              <li>• Use at least 8 characters with uppercase, lowercase, numbers and symbols</li>
+              <li>• Don't reuse passwords from other sites</li>
+              <li>• Update your password regularly for better security</li>
+            </ul>
           </div>
         </div>
       </CardContent>
